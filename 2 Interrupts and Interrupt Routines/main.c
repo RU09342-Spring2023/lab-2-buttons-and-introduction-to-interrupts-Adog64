@@ -27,6 +27,9 @@ int main(void)
     P1OUT &= ~BIT0;                         // Clear P1.0 output latch for a defined power-on state
     P1DIR |= BIT0;                          // Set P1.0 to output direction
 
+    P6DIR |= BIT6;
+    P6OUT &= ~BIT0;
+
     // @TODO You need to add in the configuration for the Green LED
 
     P2OUT |= BIT3;                          // Configure P2.3 as pulled-up
@@ -46,19 +49,30 @@ int main(void)
     {
         // @TODO You will need to modify this code to change between blinking the Red LED or the Green LED
         if (ToggleEnable)
+        {
             P1OUT ^= BIT0;                  // P1.0 = toggle
+            P6OUT &= ~BIT6;                 // Set P6.6 to 0
+        }
         else
+        {
+            P6OUT ^= BIT6;                  // 
             P1OUT &= ~BIT0;                 // Set P1.0 to 0
+        }
         __delay_cycles(100000);
     }
 }
 
 // Port 2 interrupt service routine
+#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=PORT2_VECTOR
 __interrupt void Port_2(void)
+#elif defined(__GNUC__)
+void __attribute__ ((interrupt(PORT2_VECTOR))) Port_2 (void)
+#else
+#error Compiler not supported!
+#endif
 {
     // @TODO You might need to modify this based on your approach to the lab
     P2IFG &= ~BIT3;                         // Clear P1.3 IFG
     ToggleEnable ^= 0x01;                   // Enable if the toggle should be active
 }
-
