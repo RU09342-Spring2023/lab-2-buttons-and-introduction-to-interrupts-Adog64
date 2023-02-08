@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "embedded_utils.h": "c",
+        "stdbool.h": "c"
+    }
+}

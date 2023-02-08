@@ -23,7 +23,6 @@ int main(){
     WDTCTL = WDTPW | WDTHOLD;   // stop watchdog timer
 
     //runCodeWithSoftwarePolling();
-
     runCodeWithInterrupts();
 
     return 0;
@@ -71,8 +70,8 @@ void runCodeWithInterrupts(){
 }
 
 // Port 2 interrupt service routine
-#pragma vector=PORT2_VECTOR
-__interrupt void Port_2(void)
+
+void __attribute__ ((interrupt(PORT2_VECTOR))) Port_2 (void)
 {
     P2IFG &= ~BIT3;                         // Clear P1.3 IFG
     P2IES ^= BIT3;                          // Transition the Edge Type (Low --> High, or High --> Low)
