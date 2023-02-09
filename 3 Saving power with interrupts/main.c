@@ -75,5 +75,4 @@ void __attribute__ ((interrupt(PORT2_VECTOR))) Port_2 (void)
 {
     P2IFG &= ~BIT3;                         // Clear P1.3 IFG
     P2IES ^= BIT3;                          // Transition the Edge Type (Low --> High, or High --> Low)
-    __bic_SR_register_on_exit(LPM3_bits);   // Exit LPM3
 }
