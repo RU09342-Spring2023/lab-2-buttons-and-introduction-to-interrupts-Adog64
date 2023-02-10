@@ -13,23 +13,30 @@ void killWatchdogTimer();
 /// @brief disable low power lock on GPIO
 void unlockGPIO();
 
-/// @brief Set a pin as input or output P[port].[pin]
+/// @brief Set a pin as output P[port].[pin]
 /// @param port port containing pin
 /// @param pin bit index within register
-/// @param mode set as input or output
-void setPinMode(char port, char pin, bool mode);
+void setOutputPin(char port, char pin);
 
-/// @brief Set the value of pin P[port].[pin]
+/// @brief Set a pin as input P[port].[pin]
+/// @param port port containing pin
+/// @param pin bit index within register
+void setInput(char port, char pin);
+
+/// @brief Set the value of pin P[port].[pin] to logic 1
 /// @param port port containing pin
 /// @param pin @bit index within register
-/// @param value value to set the pin
-void setPinState(char port, char pin, bool value);
+void setPin(char port, char pin);
 
+/// @brief Set the value of pin P[port].[pin] to logic 0
+/// @param port port containing pin
+/// @param pin @bit index within register
+void clearPin(char port, char pin);
 
 /// @brief Toggle the value of pin P[port].[pin]
 /// @param port port containing pin
 /// @param pin bit index within register
-void togglePinState(char port, char pin);
+void togglePin(char port, char pin);
 
 /// @brief Enable interrupts locally on pin P[port].[pin]
 /// @param port port containing pin
@@ -38,23 +45,40 @@ void enablePinInterrupt(char port, char pin);
 
 //================= DEFINITIONS ==================
 
-void setPinMode(char port, char pin, bool mode)
+void setOutput(char port, char pin)
 {
     char bit = BIT0 << pin;
     port -= 1;
     char* dir = 0x0204 + ((port >> 1) << 5) + (port & 1);
-    *dir = (mode) ? *dir | bit : *dir & ~bit; 
+    *dir |= bit;
 }
 
-void setPinState(char port , char pin, bool value)
+void setInput(char port, char pin)
+{
+    char bit = BIT0 << pin;
+    port -= 1;
+    char* dir = 0x0204 + ((port >> 1) << 5) + (port & 1);
+    *dir &= ~bit;
+}
+
+
+void setPin(char port , char pin)
 {
     char bit = BIT0 << pin;
     port -= 1;
     char* out = 0x0202 + ((port >> 1) << 5) + (port & 1);
-    *out = (value) ? *out | bit : *out & ~bit;
+    *out |= bit;
 }
 
-void togglePinState(char port, char pin)
+void clearPin(char port , char pin)
+{
+    char bit = BIT0 << pin;
+    port -= 1;
+    char* out = 0x0202 + ((port >> 1) << 5) + (port & 1);
+    *out &= ~bit;
+}
+
+void togglePin(char port, char pin)
 {
     char bit = BIT0 << pin;
     port -= 1;
