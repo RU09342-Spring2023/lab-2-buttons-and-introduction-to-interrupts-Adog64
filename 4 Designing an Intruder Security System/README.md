@@ -22,9 +22,11 @@ Several helpful functions are defined in `embedded_utils.h`.
 
 |Function Name|Brief|
 |--|--|
-|`void setPinMode(char port, char pin, bool mode)`|Set pin P[port].[pin] to mode (INPUT/OUTPUT)
-|`void setPinState(char port, char pin, bool value)`| Set pin P[port].[pin] to value
-|`void togglePinState(char port, char pin)`| Toggle the value of P[port].[pin]
+|`void setInput(char port, char pin)`|Set pin P[port].[pin] to input
+|`void setOutput(char port, char pin)`|Set pin P[port].[pin] to output
+|`void setPin(char port, char pin)`| Set value of pin P[port].[pin] to logic 1
+|`void clearPin(char port, char pin)`| Set value of pin P[port].[pin] to logic 0
+|`void togglePin(char port, char pin)`| Toggle the value of P[port].[pin]
 |`void enablePinInterrupt(char port, char pin)`| Enable interrupts locally on pin P[port].[pin]
 |`void killWatchdogTimer()`|Kills the watchdog timer
 |`void unlockGPIO()`|Disable low power lock on GPIO
